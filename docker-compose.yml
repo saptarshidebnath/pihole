@@ -1,0 +1,66 @@
+version: '3.9'
+
+services:
+  pihole:
+    build:
+      context: pihole/
+      args:
+        PIHOLE_VERSION: $PIHOLE_VERSION
+    privileged: true
+    dns:
+      - '127.0.0.1'
+      - '1.1.1.1'
+    ports: 
+      - '${IP4_ADDR}:80:80/tcp'
+      - '${IP4_ADDR}:53:53/tcp'
+      - '${IP4_ADDR}:53:53/udp'
+      - '${IP4_ADDR}:67:67/tcp'
+      - '${IP4_ADDR}:67:67/udp'
+      - '${IP4_ADDR}:443:443/tcp'
+    environment:
+      - 'ServerIP=${IP4_ADDR}'
+      - 'TZ=Asia/Kolkata'
+      - 'WEBPASSWORD=${PIHOLE_PASSWORD}'
+      - 'DNS1=${IP4_ADDR}#5053'
+      - 'WEBUIBOXEDLAYOUT=traditional'
+      - 'VIRTUAL_HOST=${HOST_NAME}'
+      - 'QUERY_LOGGING=true'
+      - 'DNSSEC=true'
+      - 'DNS_BOGUS_PRIV=false'
+      - 'REV_SERVER=true'
+      - 'REV_SERVER_TARGET=${ROUTER_IP4}'
+      - 'REV_SERVER_CIDR=${ROUTER_CIDR}'
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - './pihole/vol/etc/dnsmasq.d:/etc/dnsmasq.d/'
+      - './pihole/vol/etc/pihole/:/etc/pihole/'
+    deploy:
+      resources:
+        limits:
+          memory: 96M
+    restart: unless-stopped  
+    hostname: ${HOST_NAME}
+    networks: 
+      - pinet  
+  
+  unbound:
+    build:
+      context: unbound/
+      args:
+        UNBOUND_VERSION: $UNBOUND_VERSION
+    networks: 
+      - pinet
+    volumes:
+      - './unbound/conf/unbound.conf:/opt/unbound/etc/unbound/unbound.conf:ro'
+    ports:
+      - '${IP4_ADDR}:5053:5053/udp'
+      - '${IP4_ADDR}:5053:5053/tcp'
+    deploy: 
+      resources:
+        limits:
+          memory: 48M
+
+networks:
+  pinet:
+
