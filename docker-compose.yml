@@ -38,7 +38,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 96M
+          memory: 128M
     restart: unless-stopped  
     hostname: ${HOST_NAME}
     networks: 
@@ -59,7 +59,7 @@ services:
     deploy: 
       resources:
         limits:
-          memory: 48M
+          memory: 64M
 
 networks:
   pinet:
