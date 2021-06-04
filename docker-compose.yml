@@ -26,7 +26,7 @@ services:
       - 'VIRTUAL_HOST=${HOST_NAME}'
       - 'QUERY_LOGGING=true'
       - 'DNSSEC=true'
-      - 'DNS_BOGUS_PRIV=false'
+      - 'DNS_BOGUS_PRIV=true'
       - 'REV_SERVER=true'
       - 'REV_SERVER_TARGET=${ROUTER_IP4}'
       - 'REV_SERVER_CIDR=${ROUTER_CIDR}'
