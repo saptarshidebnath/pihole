@@ -27,6 +27,7 @@ esac
 
 echo
 echo Setting up new stack && docker-compose up -d --build
+sleep 5
 echo Running post setup code && docker-compose exec pihole /usr/bin/postsetup.sh
 
 docker-compose logs --follow

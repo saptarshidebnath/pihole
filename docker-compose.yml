@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   pihole:
+    container_name: ${COMPOSE_PROJECT_NAME}-pihole
     build:
       context: pihole/
       args:
@@ -42,9 +43,10 @@ services:
     restart: unless-stopped  
     hostname: ${HOST_NAME}
     networks: 
-      - pinet  
+      - pinet
   
   unbound:
+    container_name: ${COMPOSE_PROJECT_NAME}-unbound
     build:
       context: unbound/
       args:
