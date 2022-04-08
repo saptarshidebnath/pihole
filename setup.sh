@@ -12,9 +12,9 @@ case $VAR in
 
   "-r")
     echo
-    echo Removing previous stack && docker-compose down -v 
+    echo Removing previous stack && docker-compose down -v --rmi all --remove-orphans 
     echo Resetting addlist and custom dns mapping.
-    sudo -rf ${__pihole_vol}
+    sudo rm -rf ${__pihole_vol}
     mkdir -p ${__target_config}
     cp ${__backup_config}/adlists.list.bak ${__target_config}/adlists.list
     cp ${__backup_config}/custom.list.bak ${__target_config}/custom.list
@@ -28,7 +28,7 @@ esac
 
 echo
 echo Setting up stack && docker-compose up -d --build
-sleep 5
+echo "Waiting for 30s to update blacklist" && sleep 30
 echo Running post setup code && docker-compose exec pihole /usr/bin/postsetup.sh
 
 docker-compose logs --follow

@@ -20,7 +20,7 @@ services:
       - '${IP4_ADDR}:443:443/tcp'
     environment:
       - 'ServerIP=${IP4_ADDR}'
-      - 'TZ=Asia/Kolkata'
+      - 'TZ=America/New_York'
       - 'WEBPASSWORD=${PIHOLE_PASSWORD}'
       - 'DNS1=${IP4_ADDR}#5053'
       - 'WEBUIBOXEDLAYOUT=traditional'
@@ -31,6 +31,7 @@ services:
       - 'REV_SERVER=true'
       - 'REV_SERVER_TARGET=${ROUTER_IP4}'
       - 'REV_SERVER_CIDR=${ROUTER_CIDR}'
+      - 'PIHOLE_DOMAIN=local'
     cap_add:
       - NET_ADMIN
     volumes:
@@ -39,7 +40,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 128M
+          memory: 256M
     restart: unless-stopped  
     hostname: ${HOST_NAME}
     networks: 
@@ -67,3 +68,14 @@ services:
 networks:
   pinet:
 
+
+# networks:
+#   pinet:                         # Name of network
+#     driver: macvlan                       # Use the macvlan network driver
+#     driver_opts:
+#       parent: wlan0                    # If open vSwitch is disabled use eth0 (or eth1 +)
+#     ipam:
+#       config:
+#         - subnet: 192.168.1.0/24        # Specify subnet
+#           gateway: 192.168.1.1          # Gateway address
+#           ip_range: 192.168.1.203/31    # Available IP addresses
