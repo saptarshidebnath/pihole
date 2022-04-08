@@ -31,4 +31,4 @@ echo Setting up stack && docker-compose up -d --build
 echo "Waiting for 30s to update blacklist" && sleep 30
 echo Running post setup code && docker-compose exec pihole /usr/bin/postsetup.sh
 
-docker-compose logs --follow
+#docker-compose logs --follow
